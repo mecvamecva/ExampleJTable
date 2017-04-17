@@ -1,32 +1,35 @@
 package br.edu.univas.example.table;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 public class MyTableFrame extends JFrame {
 
 	private static final long serialVersionUID = -9179603935518411085L;
 
 	private JTextField firstField;
-	private JTextField secondField;
+	private JFormattedTextField dateFormattedField;
 	private JButton okButton;
 	private JTable dataTable;
 	private DefaultTableModel dataTableModel;
 	private JScrollPane dataScrollPane;
 
 	private GridBagConstraints firstFieldConstraints;
-	private GridBagConstraints secondFieldConstraints;
+	private GridBagConstraints dateFormattedFieldConstraints;
 	private GridBagConstraints okButtonConstraints;
 	private GridBagConstraints dataScrollPaneConstraints;
 
@@ -45,7 +48,7 @@ public class MyTableFrame extends JFrame {
 		setLayout(new GridBagLayout());
 
 		add(getFirstField(), getFirstFieldConstraints());
-		add(getSecondField(), getSecondFieldConstraints());
+		add(getDateFormattedField(), getDateFormattedFieldConstraints());
 		add(getOkButton(), getOkButtonConstraints());
 		add(getDataScrollPane(), getDataScrollPaneConstraints());
 	}
@@ -60,14 +63,25 @@ public class MyTableFrame extends JFrame {
 		return firstField;
 	}
 
-	private JTextField getSecondField() {
-		if (secondField == null) {
-			secondField = new JTextField();
-			Dimension prefSize = secondField.getPreferredSize();
+	private JFormattedTextField getDateFormattedField() {
+		if (dateFormattedField == null) {
+			SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+			dateFormattedField = new JFormattedTextField(df);
+			Dimension prefSize = dateFormattedField.getPreferredSize();
 			prefSize.width = 60;
-			secondField.setPreferredSize(prefSize);
+			dateFormattedField.setPreferredSize(prefSize);
+			installFormatter();
 		}
-		return secondField;
+		return dateFormattedField;
+	}
+
+	private void installFormatter() {
+		try {
+			MaskFormatter mf = new MaskFormatter("##/##/####");
+			mf.install(dateFormattedField);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private JButton getOkButton() {
@@ -119,13 +133,13 @@ public class MyTableFrame extends JFrame {
 		return firstFieldConstraints;
 	}
 
-	private GridBagConstraints getSecondFieldConstraints() {
-		if (secondFieldConstraints == null) {
-			secondFieldConstraints = new GridBagConstraints();
-			secondFieldConstraints.gridx = 1;
-			secondFieldConstraints.gridy = 1;
+	private GridBagConstraints getDateFormattedFieldConstraints() {
+		if (dateFormattedFieldConstraints == null) {
+			dateFormattedFieldConstraints = new GridBagConstraints();
+			dateFormattedFieldConstraints.gridx = 1;
+			dateFormattedFieldConstraints.gridy = 1;
 		}
-		return secondFieldConstraints;
+		return dateFormattedFieldConstraints;
 	}
 
 	private GridBagConstraints getOkButtonConstraints() {
@@ -149,7 +163,7 @@ public class MyTableFrame extends JFrame {
 
 	private void okClicked() {
 		String text1 = getFirstField().getText();
-		String text2 = getSecondField().getText();
+		String text2 = getDateFormattedField().getText();
 		String[] row = new String[] { text1, text2 };
 		getDataTableModel().addRow(row);
 	}
