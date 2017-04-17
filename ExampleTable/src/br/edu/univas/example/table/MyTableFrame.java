@@ -2,6 +2,8 @@ package br.edu.univas.example.table;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,6 +25,11 @@ public class MyTableFrame extends JFrame {
 	private DefaultTableModel dataTableModel;
 	private JScrollPane dataScrollPane;
 
+	private GridBagConstraints firstFieldConstraints;
+	private GridBagConstraints secondFieldConstraints;
+	private GridBagConstraints okButtonConstraints;
+	private GridBagConstraints dataScrollPaneConstraints;
+
 	public MyTableFrame() {
 		super("Example table");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,12 +42,12 @@ public class MyTableFrame extends JFrame {
 	}
 
 	private void initialize() {
-		setLayout(new FlowLayout());
+		setLayout(new GridBagLayout());
 
-		add(getFirstField());
-		add(getSecondField());
-		add(getOkButton());
-		add(getDataScrollPane());
+		add(getFirstField(), getFirstFieldConstraints());
+		add(getSecondField(), getSecondFieldConstraints());
+		add(getOkButton(), getOkButtonConstraints());
+		add(getDataScrollPane(), getDataScrollPaneConstraints());
 	}
 
 	private JTextField getFirstField() {
@@ -101,6 +108,43 @@ public class MyTableFrame extends JFrame {
 			dataScrollPane.setPreferredSize(new Dimension(300, 300));
 		}
 		return dataScrollPane;
+	}
+
+	private GridBagConstraints getFirstFieldConstraints() {
+		if (firstFieldConstraints == null) {
+			firstFieldConstraints = new GridBagConstraints();
+			firstFieldConstraints.gridx = 0;
+			firstFieldConstraints.gridy = 1;
+		}
+		return firstFieldConstraints;
+	}
+
+	private GridBagConstraints getSecondFieldConstraints() {
+		if (secondFieldConstraints == null) {
+			secondFieldConstraints = new GridBagConstraints();
+			secondFieldConstraints.gridx = 1;
+			secondFieldConstraints.gridy = 1;
+		}
+		return secondFieldConstraints;
+	}
+
+	private GridBagConstraints getOkButtonConstraints() {
+		if (okButtonConstraints == null) {
+			okButtonConstraints = new GridBagConstraints();
+			okButtonConstraints.gridx = 2;
+			okButtonConstraints.gridy = 1;
+		}
+		return okButtonConstraints;
+	}
+
+	private GridBagConstraints getDataScrollPaneConstraints() {
+		if (dataScrollPaneConstraints == null) {
+			dataScrollPaneConstraints = new GridBagConstraints();
+			dataScrollPaneConstraints.gridx = 0;
+			dataScrollPaneConstraints.gridy = 0;
+			dataScrollPaneConstraints.gridwidth = 3;
+		}
+		return dataScrollPaneConstraints;
 	}
 
 	private void okClicked() {
